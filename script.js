@@ -1,35 +1,51 @@
 var form = document.querySelector('form');
-form.addEventListener('submit',submitForm);
+form.addEventListener('submit', addListItem);
 
-function submitForm(e){
+function addListItem(e) {
     e.preventDefault();
-    
-    var name = document.getElementById('name').value
-    var email = document.getElementById('email').value
-    var date = document.getElementById('date').value
-    var time = document.getElementById('time').value
 
-    var newBooking = document.createElement('li');
-    newBooking.innerHTML = `
-        <strong>Name:</string> ${name} <br>
-        <strong>Email:</string> ${email} <br>
-        <strong>Date:</string> ${date} <br>
-        <strong>Time:</string> ${time} <br>
-    `
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-    const appointment = {
-        name,
-        email,
-        date,
-        time
-    }
+    // Get the <ul> element by its ID
+    const itemList = document.getElementById('container');
 
-    let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+    const newItemData = `Name: ${name}, Email: ${email}, Password: ${password}`;
 
-    appointments.push(appointment);
+    const newList = document.createElement('li');
+    newList.textContent = newItemData;
 
-    localStorage.setItem('appointments',JSON.stringify(appointments))
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
 
-    var list = document.getElementById('appointment-list');
-    list.appendChild(newBooking);
+    deleteBtn.addEventListener('click', function () {
+        // Remove the list item when the delete button is clicked
+        newList.remove();
+
+        // Remove the item from local storage
+        const data = JSON.parse(localStorage.getItem('formData')) || [];
+        const index = data.indexOf(newItemData);
+        if (index !== -1) {
+            data.splice(index, 1);
+            localStorage.setItem('formData', JSON.stringify(data));
+        }
+    });
+
+    newList.appendChild(deleteBtn);
+    itemList.appendChild(newList);
+
+    // Retrieve existing data from local storage as an array
+    const data = JSON.parse(localStorage.getItem('formData')) || [];
+
+    // Add the new item data to the array
+    data.push(newItemData);
+
+    // Store the updated array back in local storage
+    localStorage.setItem('formData', JSON.stringify(data));
+
+    // Clear the form fields after submission
+    document.getElementById('name').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('password').value = '';
 }
