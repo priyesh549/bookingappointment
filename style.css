@@ -1,39 +1,31 @@
-/* styles.css */
-
-/* Style the form container */
+/* Style the form */
 form {
-    width: 300px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f4f4f4;
+    margin-bottom: 20px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    max-width: 400px;
 }
 
-/* Style form labels */
 label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
 }
 
-/* Style form input fields */
-input[type="text"],
-input[type="password"] {
+input[type="text"] {
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
-/* Style the submit button */
-input[type="submit"] {
-    background-color: #007bff;
+button[type="submit"] {
+    background-color: #007BFF;
     color: #fff;
-    padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 3px;
     cursor: pointer;
 }
 
@@ -41,26 +33,35 @@ input[type="submit"] {
 ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
-/* Style list items */
+/* Style each appointment item */
 li {
-    background-color: #f4f4f4;
+    background-color: #f9f9f9;
     padding: 10px;
+    border: 1px solid #ddd;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 3px;
     position: relative;
 }
 
-/* Style the delete button */
-button {
-    background-color: #ff0000;
+/* Style the buttons */
+button.delete-button,
+button.edit-button {
+    background-color: #dc3545;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 3px;
     cursor: pointer;
     position: absolute;
     top: 5px;
     right: 5px;
+}
+
+button.edit-button {
+    background-color: #007BFF;
+    right: 90px; /* Adjust the position to prevent overlap */
 }

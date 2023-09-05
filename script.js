@@ -1,51 +1,88 @@
-var form = document.querySelector('form');
-form.addEventListener('submit', addListItem);
+const form = document.getElementById('form');
+form.addEventListener('submit', addAppointments);
 
-function addListItem(e) {
+function addAppointments(e) {
     e.preventDefault();
 
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const phone = document.getElementById('phone').value;
 
-    // Get the <ul> element by its ID
-    const itemList = document.getElementById('container');
-
-    const newItemData = `Name: ${name}, Email: ${email}, Password: ${password}`;
-
+    const listItem = document.getElementById('container');
     const newList = document.createElement('li');
-    newList.textContent = newItemData;
+
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'name-details';
+    nameDiv.textContent = name;
+
+    const emailDiv = document.createElement('div');
+    emailDiv.className = 'email-details';
+    emailDiv.textContent = email;
+
+    const phoneDiv = document.createElement('div');
+    phoneDiv.className = 'phone-details';
+    phoneDiv.textContent = phone;
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Delete';
+    deleteBtn.className = 'delete-button';
+    deleteBtn.textContent = 'delete';
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-button';
+    editBtn.textContent = 'edit';
+
+    const itemData = {
+        Name: name,
+        Email: email,
+        Phone: phone
+    }
 
     deleteBtn.addEventListener('click', function () {
-        // Remove the list item when the delete button is clicked
         newList.remove();
-
-        // Remove the item from local storage
-        const data = JSON.parse(localStorage.getItem('formData')) || [];
-        const index = data.indexOf(newItemData);
-        if (index !== -1) {
-            data.splice(index, 1);
-            localStorage.setItem('formData', JSON.stringify(data));
-        }
+        deletefromLocalStorage(email)
     });
 
+    editBtn.addEventListener('click', function () {
+        newList.remove()
+        deletefromLocalStorage(email)
+        
+        const editName = nameDiv.textContent;
+        const editEmail = emailDiv.textContent;
+        const editPhone = phoneDiv.textContent;
+
+        document.getElementById('name').value = editName;
+        document.getElementById('email').value = editEmail;
+        document.getElementById('phone').value = editPhone;
+
+        console.log(editName, editEmail, editPhone);
+    });
+
+    newList.appendChild(nameDiv);
+    newList.appendChild(emailDiv);
+    newList.appendChild(phoneDiv);
     newList.appendChild(deleteBtn);
-    itemList.appendChild(newList);
+    newList.appendChild(editBtn);
 
-    // Retrieve existing data from local storage as an array
-    const data = JSON.parse(localStorage.getItem('formData')) || [];
+    listItem.appendChild(newList);
 
-    // Add the new item data to the array
-    data.push(newItemData);
+    const data = JSON.parse(localStorage.getItem('appointments')) || [];
+    data.push(itemData);
+    localStorage.setItem('appointments',JSON.stringify(data));
 
-    // Store the updated array back in local storage
-    localStorage.setItem('formData', JSON.stringify(data));
-
-    // Clear the form fields after submission
     document.getElementById('name').value = '';
     document.getElementById('email').value = '';
-    document.getElementById('password').value = '';
+    document.getElementById('phone').value = '';
+}
+
+function deletefromLocalStorage(email){
+
+    const data = JSON.parse(localStorage.getItem('appointments')) || [];
+
+    const itemToDelete = data.find(item => item.Email === email);
+
+    if(itemToDelete){
+        const index = data.indexOf(itemToDelete);
+        data.splice(index,1);
+    }
+    localStorage.setItem('appointments',JSON.stringify(data));
 }
